@@ -703,82 +703,6 @@ function exportarPDF() {
     </tr>`;
   });
 
-  // Build clean isotonic summary for PDF from live values
-  const isoVol   = parseFloat(document.getElementById('iso-vol').value);
-  const isoMalto = parseFloat(document.getElementById('iso-malto').value);
-  const isoFruc  = parseFloat(document.getElementById('iso-fruc').value);
-  const isoSal   = parseFloat(document.getElementById('iso-sal').value);
-  const isoPot   = parseFloat(document.getElementById('iso-pot').value);
-  const isoMag   = parseFloat(document.getElementById('iso-mag').value);
-  const isoL     = isoVol/1000;
-  const isoTotalCarb = isoMalto + isoFruc;
-  const isoRatio = isoFruc > 0 ? (isoMalto/isoFruc).toFixed(1)+':1' : '—';
-  const isoOsm   = Math.round(
-    (isoMalto/1800)/isoL*1000 + (isoFruc/180)/isoL*1000 +
-    (isoSal/58.44)/isoL*2*1000 + (isoPot/74.55)/isoL*2*1000 + (isoMag/95.21)/isoL*3*1000
-  );
-  const osmLabel = isoOsm<220?'Muy hipotónica':isoOsm<270?'Ligeramente hipotónica':isoOsm<=290?'Isotónica':isoOsm<=350?'Ligeramente hipertónica':'Hipertónica';
-  const isoVolLbl = isoVol>=1000?(isoVol/1000).toFixed(isoVol%1000===0?1:2)+' L':isoVol+' ml';
-  const isoSodioMg = Math.round(isoSal*393);
-  const isoPotMg   = Math.round(isoPot*524);
-  const isoMagMg   = Math.round(isoMag*255);
-
-  const isoSummaryHtml = `
-  <table style="width:100%;border-collapse:collapse;font-size:13px;">
-    <thead><tr style="background:#1a3a6a;color:#fff;">
-      <th style="text-align:left;padding:8px 12px;font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.05em;">Componente</th>
-      <th style="text-align:right;padding:8px 12px;font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.05em;">Cantidad</th>
-      <th style="text-align:right;padding:8px 12px;font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.05em;">Detalle</th>
-    </tr></thead>
-    <tbody>
-      <tr style="background:#fff;">
-        <td style="padding:9px 12px;border-bottom:1px solid #eee;color:#333;">Agua</td>
-        <td style="padding:9px 12px;border-bottom:1px solid #eee;text-align:right;font-weight:500;">${isoVolLbl}</td>
-        <td style="padding:9px 12px;border-bottom:1px solid #eee;text-align:right;color:#888;">—</td>
-      </tr>
-      <tr style="background:#fafafa;">
-        <td style="padding:9px 12px;border-bottom:1px solid #eee;color:#333;">Carbohidratos totales</td>
-        <td style="padding:9px 12px;border-bottom:1px solid #eee;text-align:right;font-weight:500;">${isoTotalCarb} g</td>
-        <td style="padding:9px 12px;border-bottom:1px solid #eee;text-align:right;color:#888;">${(isoTotalCarb/isoVol*100).toFixed(1)} g/100 ml · ${Math.round(isoTotalCarb*4)} kcal</td>
-      </tr>
-      <tr style="background:#fff;">
-        <td style="padding:9px 12px;border-bottom:1px solid #eee;color:#333;padding-left:24px;">↳ Maltodextrina</td>
-        <td style="padding:9px 12px;border-bottom:1px solid #eee;text-align:right;">${isoMalto} g</td>
-        <td style="padding:9px 12px;border-bottom:1px solid #eee;text-align:right;color:#888;">polímero de glucosa (DE≈10)</td>
-      </tr>
-      <tr style="background:#fafafa;">
-        <td style="padding:9px 12px;border-bottom:1px solid #eee;color:#333;padding-left:24px;">↳ Fructosa</td>
-        <td style="padding:9px 12px;border-bottom:1px solid #eee;text-align:right;">${isoFruc} g</td>
-        <td style="padding:9px 12px;border-bottom:1px solid #eee;text-align:right;color:#888;">azúcar simple</td>
-      </tr>
-      <tr style="background:#fff;">
-        <td style="padding:9px 12px;border-bottom:1px solid #eee;color:#333;">Ratio Maltodextrina:Fructosa</td>
-        <td style="padding:9px 12px;border-bottom:1px solid #eee;text-align:right;font-weight:500;">${isoRatio}</td>
-        <td style="padding:9px 12px;border-bottom:1px solid #eee;text-align:right;color:#888;">óptimo: 2:1</td>
-      </tr>
-      <tr style="background:#fafafa;">
-        <td style="padding:9px 12px;border-bottom:1px solid #eee;color:#333;">Sodio (NaCl)</td>
-        <td style="padding:9px 12px;border-bottom:1px solid #eee;text-align:right;">${isoSal.toFixed(2)} g sal</td>
-        <td style="padding:9px 12px;border-bottom:1px solid #eee;text-align:right;color:#888;">${isoSodioMg} mg Na⁺ · ${Math.round(isoSodioMg/isoL)} mg/L</td>
-      </tr>
-      <tr style="background:#fff;">
-        <td style="padding:9px 12px;border-bottom:1px solid #eee;color:#333;">Potasio (KCl)</td>
-        <td style="padding:9px 12px;border-bottom:1px solid #eee;text-align:right;">${isoPot.toFixed(2)} g KCl</td>
-        <td style="padding:9px 12px;border-bottom:1px solid #eee;text-align:right;color:#888;">${isoPotMg} mg K⁺ · ${Math.round(isoPotMg/isoL)} mg/L</td>
-      </tr>
-      <tr style="background:#fafafa;">
-        <td style="padding:9px 12px;border-bottom:1px solid #eee;color:#333;">Magnesio (MgCl₂)</td>
-        <td style="padding:9px 12px;border-bottom:1px solid #eee;text-align:right;">${isoMag.toFixed(2)} g MgCl₂</td>
-        <td style="padding:9px 12px;border-bottom:1px solid #eee;text-align:right;color:#888;">${isoMagMg} mg Mg²⁺ · ${Math.round(isoMagMg/isoL)} mg/L</td>
-      </tr>
-      <tr style="background:#e8f0fc;font-weight:600;">
-        <td style="padding:9px 12px;color:#111;">Osmolalidad estimada</td>
-        <td style="padding:9px 12px;text-align:right;">${isoOsm} mOsm/kg</td>
-        <td style="padding:9px 12px;text-align:right;color:#1a3a6a;">${osmLabel}</td>
-      </tr>
-    </tbody>
-  </table>`;
-
   const html=`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
   <title>Reporte Nutricional – ${nombre}</title>
   <style>
@@ -790,7 +714,7 @@ function exportarPDF() {
   </style></head><body>
   <div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:14px;border-bottom:2px solid #111;margin-bottom:16px;">
     <div><h1 style="font-size:22px;font-weight:600;letter-spacing:-0.3px;">Reporte Nutricional</h1>
-    <p style="font-size:13px;color:#555;margin-top:4px;">Plan diario de calorías, carbohidratos y proteínas + intra-entreno isotónico</p></div>
+    <p style="font-size:13px;color:#555;margin-top:4px;">Plan diario de calorías, carbohidratos y proteínas</p></div>
     <div style="text-align:right;font-size:12px;color:#555;">
       <div><strong>${nombre}</strong></div>
       <div>${sexoVal==='m'?'Masculino':'Femenino'} · ${edad} años</div>
@@ -811,10 +735,6 @@ function exportarPDF() {
       <th style="text-align:right;padding:9px 12px;font-weight:500;font-size:11px;text-transform:uppercase;">Proteínas (g)</th>
     </tr></thead><tbody>${mealHtml}</tbody>
   </table>
-  <h2>Intra-entreno — Bebida isotónica (Maltodextrina + Fructosa)</h2>
-  <div style="background:#f0f6ff;border:1px solid #c0d0f0;border-radius:10px;padding:16px;margin-bottom:16px;">
-    ${isoSummaryHtml}
-  </div>
 
   <h2 style="page-break-before:always;">Guía de alimentos — Valores nutricionales de referencia</h2>
   <p style="font-size:12px;color:#666;margin-bottom:10px;">Valores aproximados por porción indicada. Úsalos para armar las comidas del plan.</p>
