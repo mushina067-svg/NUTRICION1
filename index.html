@@ -130,7 +130,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
   <div class="header-icon">🥗</div>
   <div>
     <h1>Calculadora Nutricional</h1>
-    <p>Metabolismo basal · Distribución calórica · Plan de comidas · Intra-entreno isotónico</p>
+    <p>Metabolismo basal · Distribución calórica · Plan de comidas</p>
   </div>
 </div>
 
@@ -257,82 +257,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
         </thead>
         <tbody id="meals-body"></tbody>
       </table>
-    </div>
-
-    <!-- INTRA-ENTRENO ISOTÓNICO -->
-    <div class="section">
-      <div class="section-title">Intra-entreno — Bebida isotónica</div>
-
-      <div class="iso-box">
-        <div class="iso-title">
-          🧪 Calculadora de bebida isotónica (Maltodextrina + Fructosa 2:1)
-        </div>
-
-        <!-- Sliders -->
-        <div class="no-print">
-          <div class="slider-row">
-            <label>Volumen de agua</label>
-            <input type="range" min="250" max="2000" step="50" value="500" id="iso-vol" oninput="calcIso()">
-            <span class="sv" id="sv-vol">500 ml</span>
-          </div>
-          <div class="slider-row">
-            <label>Maltodextrina</label>
-            <input type="range" min="0" max="120" step="1" value="20" id="iso-malto" oninput="calcIso()">
-            <span class="sv" id="sv-malto">20 g</span>
-          </div>
-          <div class="slider-row">
-            <label>Fructosa</label>
-            <input type="range" min="0" max="60" step="1" value="10" id="iso-fruc" oninput="calcIso()">
-            <span class="sv" id="sv-fruc">10 g</span>
-          </div>
-          <div class="slider-row">
-            <label>Sodio (NaCl)</label>
-            <input type="range" min="0" max="3.0" step="0.05" value="0.5" id="iso-sal" oninput="calcIso()">
-            <span class="sv" id="sv-sal">0.50 g</span>
-          </div>
-          <div class="slider-row">
-            <label>Potasio (KCl)</label>
-            <input type="range" min="0" max="2.0" step="0.05" value="0.2" id="iso-pot" oninput="calcIso()">
-            <span class="sv" id="sv-pot">0.20 g</span>
-          </div>
-          <div class="slider-row">
-            <label>Magnesio (MgCl₂)</label>
-            <input type="range" min="0" max="1.0" step="0.01" value="0.05" id="iso-mag" oninput="calcIso()">
-            <span class="sv" id="sv-mag">0.05 g</span>
-          </div>
-        </div>
-
-        <!-- Métricas -->
-        <div class="iso-grid" id="iso-metrics"></div>
-
-        <!-- Barra osmolalidad -->
-        <div class="osm-wrap">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-            <span style="font-size:12px;font-weight:500;">Osmolalidad estimada</span>
-            <span id="osm-badge" class="badge badge-iso">Isotónica</span>
-          </div>
-          <div class="osm-track">
-            <div class="osm-fill" id="osm-fill"></div>
-            <div class="osm-needle" id="osm-needle"></div>
-            <span class="osm-lbl" style="left:0%">Hipotónica</span>
-            <span class="osm-lbl" style="left:37%">Isotónica</span>
-            <span class="osm-lbl" style="left:66%">Hipertónica</span>
-          </div>
-          <div class="osm-nums"><span>0</span><span>220</span><span>270</span><span>290</span><span>400</span><span>600+</span></div>
-          <div style="font-size:10px;color:var(--text2);margin-top:6px;">
-            &lt;220 muy hipotónica · 220–270 ligeramente hipotónica · 270–290 isotónica ✓ · 290–350 ligeramente hipertónica · &gt;350 hipertónica
-          </div>
-        </div>
-
-        <!-- Electrolitos -->
-        <div class="iso-grid" id="iso-elec" style="margin-bottom:12px;"></div>
-
-        <!-- Receta -->
-        <div style="font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Receta</div>
-        <div class="iso-recipe" id="iso-recipe"></div>
-
-        <div class="iso-note" id="iso-note"></div>
-      </div>
     </div>
 
     <div class="btn-row no-print">
@@ -512,7 +436,7 @@ function calcular() {
   tbody += `<tr class="intra-row" id="intra-meals-row">
     <td>
       <div class="meal-name"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#4f8ef7;margin-right:8px;vertical-align:middle;"></span>Intra-entreno</div>
-      <div class="meal-sub">Bebida isotónica (Maltodextrina + Fructosa)</div>
+      <div class="meal-sub">Bebida intra-entreno</div>
     </td>
     <td id="intra-cal-cell">—</td>
     <td id="intra-carb-cell">—</td>
